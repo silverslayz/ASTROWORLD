@@ -23,3 +23,13 @@ class CircleShape(pygame.sprite.Sprite):
     def update(self, dt):
         # must override
         pass
+
+    
+    def collides_with(self,others,):
+        player_pos = pygame.Vector2.move_towards(self.position)
+        target_pos = pygame.Vector2.move_towards(other.position)
+        if player_pos > target_pos:
+            return True
+        else:
+            return False
+        
