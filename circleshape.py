@@ -25,10 +25,10 @@ class CircleShape(pygame.sprite.Sprite):
         pass
 
     
-    def collides_with(self,others,):
-        player_pos = pygame.Vector2.move_towards(self.position)
-        target_pos = pygame.Vector2.move_towards(other.position)
-        if player_pos > target_pos:
+    def collides_with(self,other,):
+        distance = self.position.distance_to(other.position)
+        rad_sum = self.radius + other.radius
+        if distance <= rad_sum:
             return True
         else:
             return False

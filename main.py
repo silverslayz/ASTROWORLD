@@ -4,8 +4,9 @@ from constants import SCREEN_WIDTH, SCREEN_HEIGHT
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
-from logger import log_event
-
+from logger import log_event,log_state
+import sys
+from shot import Shot
 def main():
     pygame.init()
     
@@ -14,16 +15,18 @@ def main():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     # 2. Set containers AFTER groups exist
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
-    AsteroidField.containers = (updatable,)
+    AsteroidField.containers = (updatable)
+    Shot.containers = (drawable,updatable,shots)
 
     # 3. Create instances AFTER containers are set
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
-    Player(x, y)
+    player = Player(x, y)
     AsteroidField()
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -41,8 +44,13 @@ def main():
         dt = clock.tick(60) / 1000
 
         updatable.update(dt)
+        
         for obj in asteroids:
-            if
+            if obj.collides_with(player):
+                log_event("player_hit")
+                print("Game over")
+                sys.exit()
+            
 
         screen.fill("black")
         for obj in drawable:
