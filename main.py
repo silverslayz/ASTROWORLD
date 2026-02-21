@@ -1,6 +1,6 @@
 from logger import log_state
 import pygame
-from constants import SCREEN_WIDTH, SCREEN_HEIGHT
+from constants import SCREEN_WIDTH, SCREEN_HEIGHT,Point
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
@@ -28,6 +28,9 @@ def main():
     y = SCREEN_HEIGHT / 2
     player = Player(x, y)
     AsteroidField()
+    score = 0
+    lives = 3
+    
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
@@ -35,7 +38,8 @@ def main():
     # ... rest of game loop stays the same
 
 
-    while True:
+    while lives > 0:
+        hit = False
         log_state()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -48,8 +52,17 @@ def main():
         for obj in asteroids:
             if obj.collides_with(player):
                 log_event("player_hit")
-                print("Game over")
-                sys.exit()
+                lives -= 1
+                hit = True
+                break
+        if lives <= 0:
+            print("Game over")
+            print(f"Your high score was {score}")
+            sys.exit()
+        if hit:
+            player.kill()
+            player = Player(x,y)
+            continue
 
         screen.fill("black")
         for obj in drawable:
@@ -57,13 +70,19 @@ def main():
 
         pygame.display.flip()
 
-        for asteroid in asteroids:
-            for shot in shots:
+        for asteroid in list(asteroids):
+            for shot in list(shots):
                 if asteroid.collides_with(shot):
                     log_event("asteroid_shot")
                     shot.kill()
                     asteroid.split()
-           
+                    log_event("point increase")
+                    score += 1
+        
+       
+        
+        
+                    
                 
 
 
