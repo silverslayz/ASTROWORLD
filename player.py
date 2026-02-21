@@ -1,7 +1,7 @@
 
 from constants import PLAYER_RADIUS,PLAYER_TURN_SPEED
 from circleshape import CircleShape
-from constants import LINE_WIDTH,PLAYER_SPEED,PLAYER_SHOOT_SPEED,PLAYER_SHOOT_COOLDOWN_SECONDS
+from constants import LINE_WIDTH,PLAYER_SPEED,PLAYER_SHOOT_SPEED,PLAYER_SHOOT_COOLDOWN_SECONDS,SCREEN_WIDTH,SCREEN_HEIGHT
 from shot import Shot
 import pygame
 
@@ -27,8 +27,8 @@ class Player(CircleShape):
     
     def update(self, dt):
 
-        self.move(dt) # makes player keep moving forward
-    
+        self.move(dt)
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.rotate(-dt)
@@ -41,7 +41,19 @@ class Player(CircleShape):
         if keys[pygame.K_SPACE]:
             self.shoot()
         self.Cool_down -= dt
-                
+        
+
+        r = self.radius
+        if self.position.x < -r:
+            self.position.x = SCREEN_WIDTH + r
+        elif self.position.x > SCREEN_WIDTH + r:
+            self.position.x = -r
+
+        if self.position.y < -r:
+            self.position.y = SCREEN_HEIGHT + r
+        elif self.position.y > SCREEN_HEIGHT + r:
+            self.position.y = -r
+
 
 
 
