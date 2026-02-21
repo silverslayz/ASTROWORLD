@@ -7,5 +7,6 @@ wheels/
 *.egg-info
 game_state.jsonl/
 game_events.jsonl/
+pyproject.toml/
 # Virtual environments
 .venv
